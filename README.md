@@ -1,2 +1,2 @@
 # pharma-supply-graph-demo
-Artificial data generator for a pharmaceutical supply chain
+Artificial data generator for a pharmaceutical supply chain use-case.

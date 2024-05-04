@@ -1,0 +1,5 @@
+CREATE USER reader
+  SET PLAINTEXT PASSWORD 'copenhagen'
+ CHANGE NOT REQUIRED;
+
+ 

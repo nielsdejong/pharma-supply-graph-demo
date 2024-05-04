@@ -1,0 +1,28 @@
+You are a data generator. Help me generate some data for the following scenario. The data will form a graph to be loaded in the Neo4j graph database.
+
+There is a pharmaceutical company called "Rovo Rordisk" based in Copenhagen, Denmark. This company produces and ships different types of insulin to customers in Denmark. The dataset will be related to shipping and distribution of their orders.
+
+I need the following data points. These will be nodes in my graph.
+- One headquarter node for "Rovo Rordisk" in the center of Copenhagen. this has a name, address and coordinates.
+- Four different factories in the Copenhagen area, each has a name, address and coordinates. 
+- Three types of products (insulin). Each product has a realistic name based on similar products in the industry. 
+- 8 different customers (pharmacies) located throughout Denmark, each has a name, address and coordinates.  Make sure they are located in cities and distributed evenly geographically.
+- 25 distribution points throughout Denmark. Each has a name, address, coordinates. These are distributed throughout Denmark so that deliveries can go to customers.
+- 24 orders. Orders are made by a customer and have an id, date, product name, quantity. Customer have between 3 and 7 orders. All orders take place in April 2024.
+
+make up 2-4 other properties for all of these as well.
+
+I need some extra nodes to represent the logistical flow also.
+- An "Event" node that represents a step in the delivery process. An event has a start time and end time and a name like "Producing" or "In Transit" or "Delivery". Every order will have 3-5 events. Events will be linked to the order they relate to, as well as the factory/distribution point/customer they take place.
+
+Now I need four types of relationships:
+- Between the headquarter and each factory "HAS_FACTORY"
+- PROCUDES relationships Between factory and product. A factory produces two types of products.
+- Relationships for each step in the order process. Between steps "NEXT_STEP", between steps and (factory, customer, distribution centers) called "LOCATED_AT", between product and order "FOR_PRODUCT", between customer and order "ORDERED". 
+
+Remember that every order is for a single product, has 3-5 events, linked to 3-5 distribution centers. The steps must be in chronological order. It always start with "Producing" at a factory, then a number of "In Transit" at distribution points, and "Delivery" at a customer. The steps must also makes sense in order of distance: going outward from the factory to the customers.
+
+Your output should be valid Neo4j cypher statements. Use CREATE for relationships. Resolve duplicate nodes with "MERGE".  Do NOT explain anything. Just give me the Cypher statements. nothing else.
+
+Don't generate anything yet. This is context. Next I will tell you how many of each thing to generate.
+
