@@ -37,7 +37,7 @@ export default function Home() {
   async function fetchProduct(name: string) {
     try {
       // API call to fetch data
-      const url = 'http://fastapi-example-6ljq.onrender.com/products/' + name;
+      const url = 'https://fastapi-example-6ljq.onrender.com/products/' + name;
       // const url = 'http://localhost:8000/products/' + name
       const response = await fetch(url, {});
 
@@ -65,7 +65,7 @@ export default function Home() {
   async function fetchProducts() {
     try {
       // API call to fetch data
-      const url = 'http://fastapi-example-6ljq.onrender.com/products/';
+      const url = 'https://fastapi-example-6ljq.onrender.com/products/';
       // const url = 'http://localhost:8000/products';
       const response = await fetch(url, {});
 
