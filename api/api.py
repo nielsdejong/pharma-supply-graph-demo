@@ -3,6 +3,7 @@ from neo4j import GraphDatabase, basic_auth
 from typing import List
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 class ProductDetails(BaseModel):
@@ -25,6 +26,16 @@ class OrderDetails(BaseModel):
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Add CORS middleware to allow all origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 
 # Database connection details
 uri = "neo4j+s://0bbf8364.databases.neo4j.io:7687"
