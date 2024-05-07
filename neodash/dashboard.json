@@ -1,0 +1,280 @@
+{
+  "uuid": "5cc7690c-3ebd-4111-81af-da6d11734146",
+  "title": "New dashboard",
+  "version": "2.4",
+  "settings": {
+    "pagenumber": 3,
+    "editable": true,
+    "fullscreenEnabled": false,
+    "parameters": {
+      "neodash_order_id": "ORD004",
+      "neodash_order_id_display": "ORD004"
+    },
+    "theme": "light"
+  },
+  "pages": [
+    {
+      "title": "New page",
+      "reports": [
+        {
+          "id": "406e942e-e7c6-42da-a736-d30d8cc94ba2",
+          "title": "",
+          "query": "MATCH (c:Customer)-[:ORDERED]->(o:Order)\nRETURN c.name, o.id\n\n\n",
+          "width": 12,
+          "height": 4,
+          "x": 0,
+          "y": 0,
+          "type": "table",
+          "selection": {},
+          "settings": {}
+        },
+        {
+          "id": "b6f71500-e66b-4079-b616-a912f080ceb0",
+          "title": "",
+          "query": "MATCH (c:Customer)-[oo:ORDERED]->(o:Order)\nRETURN c, oo, o\n\n\n\n\n\n",
+          "width": 12,
+          "height": 4,
+          "x": 12,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "Customer": "name",
+            "ORDERED": "(label)",
+            "Order": "id"
+          },
+          "settings": {},
+          "schema": [
+            [
+              "Customer",
+              "storeType",
+              "address",
+              "totalEvents",
+              "customerSize",
+              "latitude",
+              "name",
+              "point",
+              "longitude"
+            ],
+            [
+              "ORDERED"
+            ],
+            [
+              "Order",
+              "date",
+              "quantity",
+              "id"
+            ]
+          ]
+        },
+        {
+          "id": "2c652023-628a-4db1-bfd7-c79b485472f2",
+          "title": "",
+          "query": "\nMATCH (c:Customer)--(o:Order)\nRETURN c.name, COUNT(o)\n\n",
+          "width": 12,
+          "height": 4,
+          "x": 0,
+          "y": 4,
+          "type": "pie",
+          "selection": {
+            "index": "c.name",
+            "value": "COUNT(o)",
+            "key": "(none)"
+          },
+          "settings": {},
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "New page",
+      "reports": [
+        {
+          "id": "dd9a80b8-bbff-4edc-8c87-f41e1d780a88",
+          "title": "",
+          "query": "MATCH (a)-[d:DELIVERS_TO]->(b)\nRETURN a, d, b\n\n\n",
+          "width": 22,
+          "height": 6,
+          "x": 0,
+          "y": 0,
+          "type": "map",
+          "selection": {
+            "DistributionPoint": "name",
+            "DELIVERS_TO": "(label)",
+            "Customer": "name",
+            "Factory": "name"
+          },
+          "settings": {
+            "defaultNodeSize": "small"
+          },
+          "schema": [
+            [
+              "DistributionPoint",
+              "address",
+              "totalEvents",
+              "latitude",
+              "name",
+              "type",
+              "point",
+              "capacity",
+              "longitude"
+            ],
+            [
+              "DELIVERS_TO",
+              "totalShipped"
+            ],
+            [
+              "Customer",
+              "storeType",
+              "address",
+              "totalEvents",
+              "customerSize",
+              "latitude",
+              "name",
+              "point",
+              "longitude"
+            ],
+            [
+              "Factory",
+              "address",
+              "totalEvents",
+              "latitude",
+              "name",
+              "point",
+              "capacity",
+              "longitude"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "title": "New page",
+      "reports": [
+        {
+          "id": "d376ed19-e40a-479d-92e3-f544367718f2",
+          "title": "",
+          "query": "MATCH path=(o:Order)-[h:HAS_EVENT]->(e:Event),\n(e)-[n:NEXT*0..1]->(e2:Event)-[:LOCATED_AT]->(loc)\nWHERE o.id = $neodash_order_id \nWITH loc ORDER BY e2.start\nWITH apoc.coll.pairs(collect(loc))[0..-1] as locations\nUNWIND locations as locpair\nRETURN locpair[0], locpair[1], apoc.create.vRelationship(locpair[0], \"TO\", {}, locpair[1])\n\n\n\n",
+          "width": 16,
+          "height": 6,
+          "x": 0,
+          "y": 0,
+          "type": "map",
+          "selection": {
+            "Factory": "name",
+            "DistributionPoint": "name",
+            "TO": "(label)",
+            "Customer": "name"
+          },
+          "settings": {},
+          "schema": [
+            [
+              "Factory",
+              "address",
+              "totalEvents",
+              "latitude",
+              "name",
+              "point",
+              "capacity",
+              "longitude"
+            ],
+            [
+              "DistributionPoint",
+              "address",
+              "totalEvents",
+              "latitude",
+              "name",
+              "type",
+              "point",
+              "longitude",
+              "capacity"
+            ],
+            [
+              "TO"
+            ],
+            [
+              "Customer",
+              "storeType",
+              "address",
+              "totalEvents",
+              "customerSize",
+              "latitude",
+              "name",
+              "point",
+              "longitude"
+            ]
+          ]
+        },
+        {
+          "id": "89b23d91-4e16-4bec-b132-d51a94557d65",
+          "title": "",
+          "query": "MATCH (n:`Order`) \nWHERE toLower(toString(n.`id`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`id` as value,  n.`id` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 7,
+          "height": 6,
+          "x": 16,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "Order",
+            "propertyType": "id",
+            "propertyTypeDisplay": "id",
+            "parameterName": "neodash_order_id"
+          },
+          "schema": []
+        }
+      ]
+    },
+    {
+      "title": "New page",
+      "reports": [
+        {
+          "id": "5af46fba-63bc-46a8-98f2-0ca7ebffeead",
+          "title": "",
+          "query": "MATCH path=(p:Product)-[:FOR_PRODUCT]-(o:Order)-[h:HAS_EVENT]->(e:Event)\nRETURN path\n\n\n\n",
+          "width": 24,
+          "height": 6,
+          "x": 0,
+          "y": 0,
+          "type": "graph3d",
+          "selection": {
+            "Product": "name",
+            "Order": "id",
+            "Event": "(label)"
+          },
+          "settings": {},
+          "schema": [
+            [
+              "Product",
+              "duration",
+              "name",
+              "storageTemperature",
+              "packageSize",
+              "type"
+            ],
+            [
+              "Order",
+              "date",
+              "quantity",
+              "id"
+            ],
+            [
+              "Event",
+              "start",
+              "end",
+              "type"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "parameters": {},
+  "extensions": {
+    "active": true,
+    "activeReducers": [],
+    "advanced-charts": {
+      "active": true
+    }
+  }
+}
